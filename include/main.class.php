@@ -3,7 +3,8 @@
 class main {
   function __construct() {
     if (apiDetector::isApiCall() == true) {
-      echo '// parse api request';
+      $api = new api;
+      $api->getCallDetails();
     } else {
       echo '// display web frontend';
     }
