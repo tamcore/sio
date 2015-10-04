@@ -1,5 +1,6 @@
 # project
 config.php
+*.db
 
 # vim
 [._]*.s[a-w][a-z]
