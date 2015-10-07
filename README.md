@@ -1,7 +1,4 @@
 ### Done
-* :(
-
-### In-Work
 * Actions
     * Incoming
         * \<Dial\> (```<Number></Number>, <Voicemail />```)
@@ -9,6 +6,8 @@
         * \<Reject\> (```<Reject reason="rejected"></Reject>``` and ```<Reject reason="busy"></Reject>```)
      * Outgoing
         * \<Dial\> (```<Dial anonymous="true"> and <Dial callerId="49123456789">```)
+
+### In-Work
 
 ### ToDo
 * call logging to database (enable/disable on a per-number base)
