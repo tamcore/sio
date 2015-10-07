@@ -3,9 +3,10 @@
 class numbers {
   private $sql, $number, $user;
 
-  public function __construct() {
-    #$this->sql = new SQLite3(DB_NAME);
-    $this->sql = new sql;
+  public function __construct($number = 0, $user = 0) {
+    $this->sql    = new sql;
+    $this->number = $number;
+    $this->user   = $user;
   }
 
   public function setNumber($number) {
@@ -20,7 +21,7 @@ class numbers {
     $stmt = $this->sql->prepare("SELECT dnd FROM numbers WHERE number=:number;");
     $stmt->bindValue(':number', $this->number, SQLITE3_INTEGER);
     $result = $stmt->execute();
-    return $result->fetchArray(SQLITE3_ASSOC)['dnd'];
+    return (bool)$result->fetchArray(SQLITE3_ASSOC)['dnd'];
   }
 
   public function setDnd($dnd = 0) {
@@ -45,6 +46,8 @@ class numbers {
   }
 
   public function addNumber() {
+    if ($this->isValid() == true) return false;
+
     // add number
     $stmt = $this->sql->prepare("INSERT INTO numbers (number, user, dnd) VALUES (:number, :user, 0)");
     $stmt->bindValue(':number', $this->number, SQLITE3_INTEGER);
@@ -60,6 +63,37 @@ class numbers {
       return true;
 
     return false;
+  }
+
+  public function changeNumber($to) {
+    if ($this->isValid() == false) return false;
+
+    $stmt = $this->sql->prepare("UPDATE numbers SET number=:to WHERE number=:number");
+    $stmt->bindValue(':to', $to, SQLITE3_INTEGER);
+    $stmt->bindValue(':number', $this->number, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    return (bool)$this->sql->changes();
+  }
+
+  public function deleteNumber() {
+    if ($this->isValid() == false) return false;
+
+    $stmt = $this->sql->prepare("SELECT id FROM numbers WHERE number=:number AND user=:user");
+    $stmt->bindValue(':number', $this->number, SQLITE3_INTEGER);
+    $stmt->bindValue(':user', $this->user, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if (!$id = $result->fetchArray(SQLITE3_ASSOC)['id'])
+        return false;
+
+    $stmt = $this->sql->prepare("DELETE FROM numbers WHERE id=:id");
+    $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
+    $stmt->execute();
+    $changes = $this->sql->changes();
+
+    $this->sql->exec("DELETE FROM actions WHERE number NOT In (SELECT DISTINCT id FROM numbers);");
+    $changes = ($changes + $this->sql->changes());
+
+    return (bool)$changes;
   }
 }
 
