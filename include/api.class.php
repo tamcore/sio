@@ -30,9 +30,14 @@ class api {
   public function handleCall() {
     switch ($this->callDirection) {
       case 'in':
+        $numbers = new numbers($this->callDestination);
+        if ($numbers->isValid() == false) exit;
+        if ($numbers->getDnd() == true) $this->printResponse('<Reject />');
         $actions = new actions($this->callDirection, $this->callDestination, $this->callSource);
         break;
       case 'out':
+        $numbers = new numbers($this->callSource);
+        if ($numbers->isValid() == false) exit;
         $actions = new actions($this->callDirection, $this->callSource, $this->callDestination);
         break;
       default;
@@ -47,6 +52,7 @@ class api {
     echo '<Response>' . PHP_EOL;
     echo $response . PHP_EOL;
     echo '</Response>' . PHP_EOL;
+    exit;
   }
 }
 
