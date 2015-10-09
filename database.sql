@@ -12,7 +12,7 @@ CREATE TABLE `numbers` (
 CREATE TABLE `actions` (
     `id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
     `number`    INTEGER NOT NULL,
-    `extnumber` NUMERIC NOT NULL,
+    `extnumber` TEXT NOT NULL,
     `direction` TEXT NOT NULL,
     `action`    TEXT NOT NULL,
     `param1`    TEXT,
