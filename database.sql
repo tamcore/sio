@@ -16,5 +16,6 @@ CREATE TABLE `actions` (
     `direction` TEXT NOT NULL,
     `action`    TEXT NOT NULL,
     `param1`    TEXT,
-    `param2`    TEXT
+    `param2`    TEXT,
+    `type`      INTEGER NOT NULL DEFAULT 0
 );
