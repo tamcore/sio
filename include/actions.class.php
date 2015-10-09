@@ -11,12 +11,16 @@ class actions {
   }
 
   public function getAction() {
-    $stmt = $this->sql->prepare("SELECT a.extnumber,a.direction,a.action,a.param1,a.param2,a.type,n.number FROM actions AS a JOIN numbers AS n on n.id = a.number WHERE a.direction=:direction AND n.number=:localNumber AND (a.extnumber=:remoteNumber OR a.type=1) ORDER BY type LIMIT 1;");
+    $stmt = $this->sql->prepare("SELECT a.extnumber,a.direction,a.action,a.param1,a.param2,a.type,n.number FROM actions AS a JOIN numbers AS n on n.id = a.number WHERE a.direction=:direction AND n.number=:localNumber AND (a.extnumber=:remoteNumber OR a.type=1) ORDER BY type;");
     $stmt->bindValue(':direction', $this->callDirection, SQLITE3_TEXT);
     $stmt->bindValue(':localNumber', $this->localNumber, SQLITE3_INTEGER);
     $stmt->bindValue(':remoteNumber', $this->remoteNumber, SQLITE3_INTEGER);
     $result = $stmt->execute();
-    return $this->parseAction($result->fetchArray(SQLITE3_ASSOC));
+    $res  = '';
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+      $res .= $this->parseAction($row);
+    }
+    return $res;
   }
 
   private function parseAction($result) {
