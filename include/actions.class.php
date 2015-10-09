@@ -18,7 +18,8 @@ class actions {
     $result = $stmt->execute();
     $res  = '';
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-      $res .= $this->parseAction($row);
+      $res = $this->parseAction($row);
+      if ($res != '') break;
     }
     return $res;
   }
