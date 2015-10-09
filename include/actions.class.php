@@ -25,6 +25,9 @@ class actions {
   }
 
   private function parseAction($result) {
+    if (is_array($result) == false) {
+      $result = array('action' => $result, 'param1' => '', 'param2' =>'', 'type' => 0);
+    }
     if ($result['type'] == 1) {
       if (@preg_match($result['extnumber'], $this->remoteNumber) == false)
         return false;
@@ -39,6 +42,9 @@ class actions {
       case 'reject':
         $result = $this->rejectAction($result['param1']);
         break;
+      case 'hangup':
+        $result = $this->hangupAction();
+        break;
       default:
         echo 'Unknown action defined: ' . $result["action"] . PHP_EOL;
         break;
@@ -52,9 +58,9 @@ class actions {
     return '<Reject ' . $reason . '/>';
   }
 
-  private function playAction($url, $hangup) {
+  private function playAction($url, $param) {
     $response = '<Play><Url>' . $url . '</Url></Play>';
-    if (empty($hangup) == false) $response = $response . '<Hangup />';
+    if (empty($param) == false) $response = $response . $this->parseAction($param);
     return $response;
   }
 
@@ -71,6 +77,10 @@ class actions {
     }
     $response .= '</Dial>';
     return $response;
+  }
+
+  private function hangupAction() {
+    return '<Hangup />';
   }
 }
 
