@@ -24,7 +24,7 @@ class actions {
     return $res;
   }
 
-  private function parseAction($result) {
+  public function parseAction($result) {
     if (is_array($result) == false) {
       $result = array('action' => $result, 'param1' => '', 'param2' =>'', 'type' => 0);
     }
@@ -44,6 +44,9 @@ class actions {
         break;
       case 'hangup':
         $result = $this->hangupAction();
+        break;
+      case 'voicemail':
+        $result = $this->dialAction('in', 'voicemail', NULL);
         break;
       default:
         echo 'Unknown action defined: ' . $result["action"] . PHP_EOL;

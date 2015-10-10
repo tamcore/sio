@@ -24,6 +24,18 @@ class numbers {
     return (bool)$result->fetchArray(SQLITE3_ASSOC)['dnd'];
   }
 
+  public function getDndAction() {
+    $stmt = $this->sql->prepare("SELECT dnd_action FROM numbers WHERE number=:number;");
+    $stmt->bindValue(':number', $this->number, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $action = $result->fetchArray(SQLITE3_ASSOC)['dnd_action'];
+    $actions = new actions(0,0,0);
+    if (empty($action) == false) {
+      return $actions->parseAction($action);
+    }
+    return $actions->parseAction('hangup');
+  }
+
   public function setDnd($dnd = 0) {
     // set dnd value in db
     $stmt = $this->sql->prepare("UPDATE numbers SET dnd=:dnd WHERE number=:number");

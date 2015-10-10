@@ -32,7 +32,7 @@ class api {
       case 'in':
         $numbers = new numbers($this->callDestination);
         if ($numbers->isValid() == false) exit;
-        if ($numbers->getDnd() == true) $this->printResponse('<Reject />');
+        if ($numbers->getDnd() == true) $this->printResponse($numbers->getDndAction());
         $actions = new actions($this->callDirection, $this->callDestination, $this->callSource);
         break;
       case 'out':
