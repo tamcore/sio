@@ -2,7 +2,7 @@
 
 class main {
   function __construct() {
-    if (apiDetector::isApiCall() == true) {
+    if (api::isApiCall() == true) {
       header('Content-type: application/xml');
       $api = new api;
       $api->handleCall();
