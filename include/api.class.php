@@ -1,12 +1,13 @@
 <?php
 
 class api {
-  private $callSource, $callDestination, $callDirection;
+  private $callSource, $callDestination, $callDirection, $callDiversion;
 
   public function __construct() {
     $this->setCallSource($_POST['from']);
     $this->setCallDestination($_POST['to']);
     $this->setCallDirection($_POST['direction']);
+    if (isset($_POST['diversion'])) $this->setCallDiversion($_POST['diversion']);
   }
 
   private function setCallSource($number) {
@@ -21,15 +22,30 @@ class api {
     $this->callDirection = $direction;
   }
 
+  private function setCallDiversion($diversion) {
+    $this->callDiversion = $diversion;
+  }
+
   public function dumpCallDetails() {
     echo 'From:      ' . $this->callSource . PHP_EOL;
     echo 'To:        ' . $this->callDestination . PHP_EOL;
     echo 'Direction: ' . $this->callDirection . PHP_EOL;
+    echo 'Diversion: ' . $this->callDiversion . PHP_EOL;
   }
 
   public function handleCall() {
     switch ($this->callDirection) {
       case 'in':
+        if ($this->callDiversion) {
+          $numbers = new numbers($this->callDiversion);
+          if ($numbers->isValid() == true) {
+            if ($numbers->getDnd() == true)
+              $this->printResponse($numbers->getDndAction());
+            $actions = new actions($this->callDirection, $this->callDiversion, $this->callSource);
+            if ($actions->getAction())
+              break;
+          }
+        }
         $numbers = new numbers($this->callDestination);
         if ($numbers->isValid() == false) exit;
         if ($numbers->getDnd() == true) $this->printResponse($numbers->getDndAction());
