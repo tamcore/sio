@@ -18,5 +18,6 @@ CREATE TABLE `actions` (
     `action`    TEXT NOT NULL,
     `param1`    TEXT,
     `param2`    TEXT,
+    `active`    INTEGER NOT NULL DEFAULT 0,
     `type`      INTEGER NOT NULL DEFAULT 0
 );
