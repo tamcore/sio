@@ -40,16 +40,20 @@ class api {
           $numbers = new numbers($this->callDiversion);
           if ($numbers->isValid() == true) {
             if ($numbers->getDnd() == true)
-              $this->printResponse($numbers->getDndAction());
-            $actions = new actions($this->callDirection, $this->callDiversion, $this->callSource);
-            if ($actions->getAction())
-              break;
+              $action = $numbers->getDndAction();
+            else {
+              $actions = new actions($this->callDirection, $this->callDiversion, $this->callSource);
+              if ($actions->getAction())
+                break;
+            }
           }
         }
         $numbers = new numbers($this->callDestination);
         if ($numbers->isValid() == false) exit;
-        if ($numbers->getDnd() == true) $this->printResponse($numbers->getDndAction());
-        $actions = new actions($this->callDirection, $this->callDestination, $this->callSource);
+        if ($numbers->getDnd() == true)
+          $action = $numbers->getDndAction();
+        else
+          $actions = new actions($this->callDirection, $this->callDestination, $this->callSource);
         break;
       case 'out':
         $numbers = new numbers($this->callSource);
@@ -60,7 +64,12 @@ class api {
         echo "Invalid direction:" . $this->callDirection . PHP_EOL;
         break;
     }
-    $this->printResponse($actions->getAction());
+    if (isset($action) == false) $action = $actions->getAction();
+
+    $log = new log();
+    $log->logCall($this->callDirection, $this->callSource, $this->callDestination, $action);
+
+    $this->printResponse($action);
   }
 
   private function printResponse($response) {

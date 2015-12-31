@@ -24,3 +24,12 @@ CREATE TABLE 'actions' (
     'type' INTEGER DEFAULT 0,
     'active' INTEGER NOT NULL DEFAULT 0
     );
+
+CREATE TABLE 'callog' (
+    'id' INTEGER PRIMARY KEY NOT NULL,
+    'date' DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    'source' TEXT NOT NULL,
+    'destination' TEXT NOT NULL,
+    'direction' TEXT NOT NULL,
+    'action' TEXT
+    );
