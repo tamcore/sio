@@ -10,7 +10,6 @@
         * \<Dial\> (```<Dial anonymous="true"> and <Dial callerId="49123456789">```)
 
 ### ToDo
-* call logging to database (enable/disable on a per-number base)
 * notifications (email, telegram?, ..) on user-defined actions
 * user registration (enable/disable via config.php, verify number via whatsapp -> cheapest way)
 * responsive webinterface (mobile friendly!!)

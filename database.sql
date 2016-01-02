@@ -9,7 +9,8 @@ CREATE TABLE `numbers` (
     `number` NUMERIC NOT NULL UNIQUE,
     `user` INTEGER NOT NULL,
     `dnd` INTEGER NOT NULL DEFAULT 0,
-    'dnd_action' TEXT NOT NULL DEFAULT 'hangup'
+    'dnd_action' TEXT NOT NULL DEFAULT 'hangup',
+    `logging` INTEGER NOT NULL DEFAULT 1
     );
 
 CREATE TABLE 'actions' (
