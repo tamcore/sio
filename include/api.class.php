@@ -36,24 +36,25 @@ class api {
   public function handleCall() {
     switch ($this->callDirection) {
       case 'in':
-        if ($this->callDiversion) {
-          $numbers = new numbers($this->callDiversion);
-          if ($numbers->isValid() == true) {
-            if ($numbers->getDnd() == true)
-              $action = $numbers->getDndAction();
-            else {
-              $actions = new actions($this->callDirection, $this->callDiversion, $this->callSource);
-              if ($actions->getAction())
-                break;
-            }
-          }
-        }
+#        if ($this->callDiversion) {
+#          $numbers = new numbers($this->callDiversion);
+#          if ($numbers->isValid() == true) {
+#            $actions = new actions($this->callDirection, $this->callDiversion, $this->callSource);
+#            if ($numbers->getDnd() == true)
+#              if ($actions->getWhitelist() == false)
+#                $action = $numbers->getDndAction();
+#            else {
+#              if ($actions->getAction())
+#                break;
+#            }
+#          }
+#        }
         $numbers = new numbers($this->callDestination);
         if ($numbers->isValid() == false) exit;
+        $actions = new actions($this->callDirection, $this->callDestination, $this->callSource);
         if ($numbers->getDnd() == true)
-          $action = $numbers->getDndAction();
-        else
-          $actions = new actions($this->callDirection, $this->callDestination, $this->callSource);
+          if ($actions->isWhitelist() == false)
+            $action = $numbers->getDndAction();
         break;
       case 'out':
         $numbers = new numbers($this->callSource);

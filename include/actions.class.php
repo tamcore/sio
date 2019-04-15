@@ -10,6 +10,16 @@ class actions {
     $this->sql           = new sql;
   }
 
+  public function isWhitelist() {
+    $stmt = $this->sql->prepare("SELECT w.extnumber,n.number FROM whitelist AS w JOIN numbers AS n on n.id = w.number WHERE n.number=:localNumber AND w.extnumber=:remoteNumber;");
+    $stmt->bindValue(':localNumber', $this->localNumber, SQLITE3_INTEGER);
+    $stmt->bindValue(':remoteNumber', $this->remoteNumber, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if (isset($result->fetchArray(SQLITE3_ASSOC)['extnumber']))
+      return true;
+    return false;
+  }
+
   public function getAction() {
     $stmt = $this->sql->prepare("SELECT a.extnumber,a.direction,a.action,a.param1,a.param2,a.type,n.number FROM actions AS a JOIN numbers AS n on n.id = a.number WHERE a.active=1 AND a.direction=:direction AND n.number=:localNumber AND (a.extnumber=:remoteNumber OR a.type=1) ORDER BY type;");
     $stmt->bindValue(':direction', $this->callDirection, SQLITE3_TEXT);

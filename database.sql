@@ -34,3 +34,5 @@ CREATE TABLE 'callog' (
     'direction' TEXT NOT NULL,
     'action' TEXT
     );
+
+CREATE TABLE 'whitelist' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'number' INTEGER NOT NULL, 'extnumber' INTEGER NOT NULL, 'comment' TEXT);
