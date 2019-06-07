@@ -1,0 +1,3 @@
+[submodule "ifttt-php"]
+	path = ifttt-php
+	url = https://github.com/marcorubagotti/ifttt-php
