@@ -17,6 +17,13 @@ class numbers {
     $this->user = $user;
   }
 
+  public function getIftttKey() {
+    $stmt = $this->sql->prepare("SELECT ifttt_key FROM numbers WHERE number=:number;");
+    $stmt->bindValue(':number', $this->number, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    return $result->fetchArray(SQLITE3_ASSOC)['ifttt_key'];
+  }
+
   public function getDnd() {
     $stmt = $this->sql->prepare("SELECT dnd FROM numbers WHERE number=:number;");
     $stmt->bindValue(':number', $this->number, SQLITE3_INTEGER);
