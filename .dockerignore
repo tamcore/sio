@@ -1,0 +1,8 @@
+.git
+.gitignore
+.gitmodules
+README.md
+database.sql
+config.sample.php
+Dockerfile
+.dockerignore
