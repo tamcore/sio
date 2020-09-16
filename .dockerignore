@@ -6,3 +6,4 @@ database.sql
 config.sample.php
 Dockerfile
 .dockerignore
+sio.db
